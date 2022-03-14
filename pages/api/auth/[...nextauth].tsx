@@ -22,6 +22,7 @@ export default NextAuth({
         .join('')
         .toLowerCase()
 
+      session.user.uid = token.sub!
       return session
     },
   },
