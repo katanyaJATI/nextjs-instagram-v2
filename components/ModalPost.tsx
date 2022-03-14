@@ -37,18 +37,12 @@ function ModalPost() {
     if (loading) return
 
     setLoading(true)
-    console.log({username: session?.user.username,
-      caption: captionRef.current.value,
-      profileImg: session?.user.image,
-      timestamp: serverTimestamp,})
     const docRef = await addDoc(collection(db, 'posts'), {
       username: session?.user.username,
       caption: captionRef.current.value,
       profileImg: session?.user.image,
       timestamp: serverTimestamp(),
     })
-
-    console.log('New doc added with ID', docRef.id)
 
     const imageRef = ref(storage, `posts/${docRef.id}`)
 

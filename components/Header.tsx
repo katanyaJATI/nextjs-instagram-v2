@@ -18,7 +18,6 @@ function Header() {
   const { data: session } = useSession()
   const [modalPost, setModalPost] = useRecoilState(modalPostState)
 
-  console.log({ session })
   return (
     <div className="sticky top-0 z-50 border-b bg-white shadow-sm">
       <div className="bg-ref-500 mx-5 flex max-w-6xl justify-between xl:mx-auto">
