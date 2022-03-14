@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Feed from '../components/Feed'
 import Header from '../components/Header'
+import ModalPost from '../components/ModalPost'
 
 const Home: NextPage = () => {
   return (
@@ -11,12 +12,10 @@ const Home: NextPage = () => {
         <title>Instagram 2.0 Katanyacode</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <Header />
-
       <Feed />
 
-      {/* Modal */}
+      <ModalPost />
     </div>
   )
 }

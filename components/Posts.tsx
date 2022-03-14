@@ -1,40 +1,29 @@
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { useEffect, useState } from 'react'
 import Post from './Post'
-
-const DUMMY_DATE = [
-  {
-    id: '123',
-    username: 'katanyajati',
-    userImg: 'https://i.pravatar.cc/300',
-    img: 'https://i.pravatar.cc/300',
-    caption: 'Wowwww! This is Dopee!!!',
-  },
-  {
-    id: '123',
-    username: 'katanyajati',
-    userImg: 'https://i.pravatar.cc/300',
-    img: 'https://i.pravatar.cc/300',
-    caption: 'Wowwww! This is Dopee!!!',
-  },
-  {
-    id: '123',
-    username: 'katanyajati',
-    userImg: 'https://i.pravatar.cc/300',
-    img: 'https://i.pravatar.cc/300',
-    caption: 'Wowwww! This is Dopee!!!',
-  },
-]
+import { db } from '../firebase'
 
 function Posts() {
+  const [posts, setPosts] = useState<PostProps[]>([])
+  useEffect(() => {
+    return onSnapshot(
+      query(collection(db, 'posts'), orderBy('timestamp', 'desc')),
+      (snapshot) => {
+        setPosts(snapshot.docs)
+      }
+    )
+  }, [db])
+
   return (
     <div>
-      {DUMMY_DATE.map((post) => (
+      {posts.map((post) => (
         <Post
-          key={post.id}
-          id={post.id}
-          username={post.username}
-          userImg={post.userImg}
-          img={post.img}
-          caption={post.caption}
+          key={post.data().id}
+          id={post.data().id}
+          username={post.data().username}
+          userImg={post.data().profileImg}
+          img={post.data().image}
+          caption={post.data().caption}
         />
       ))}
     </div>
