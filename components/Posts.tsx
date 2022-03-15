@@ -9,7 +9,18 @@ function Posts() {
     return onSnapshot(
       query(collection(db, 'posts'), orderBy('timestamp', 'desc')),
       (snapshot) => {
-        setPosts(snapshot.docs)
+        const docs = snapshot.docs;
+        const posts: PostProps[] = [];
+        docs.forEach((doc) => {
+          posts.push({
+            id: doc.id,
+            username: doc.data().username,
+            userImg: doc.data().profileImg,
+            img: doc.data().image,
+            caption: doc.data().caption,
+          });
+        });
+        setPosts(posts);
       }
     )
   }, [db])
@@ -20,10 +31,10 @@ function Posts() {
         <Post
           key={post.id}
           id={post.id}
-          username={post.data().username}
-          userImg={post.data().profileImg}
-          img={post.data().image}
-          caption={post.data().caption}
+          username={post.username}
+          userImg={post.userImg}
+          img={post.img}
+          caption={post.caption}
         />
       ))}
     </div>

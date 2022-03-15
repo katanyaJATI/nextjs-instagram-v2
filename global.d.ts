@@ -1,16 +1,26 @@
 declare module '@tailwindcss/forms'
-type StroyProps = {
+interface StroyProps {
   img: string
   username: string
 }
-type PostProps = {
+
+interface PostProps {
   id: string
   username: string
   userImg: string
   img: string
   caption: string
 }
-type SignInProps = {
+
+interface CommentProps {
+  id: string
+  userImage: string
+  username: string
+  comment: string
+  timestamp: Firebase.ServerValue.TIMESTAMP
+}
+
+interface SignInProps {
   providers: Promise<Record<
     LiteralUnion<BuiltInProviderType, string>,
     ClientSafeProvider

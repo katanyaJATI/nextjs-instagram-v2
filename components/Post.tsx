@@ -26,8 +26,8 @@ import Comments from './Comments'
 function Post({ id, username, caption, img, userImg }: PostProps) {
   const { data: session } = useSession()
   const [comment, setComment] = useState<string>('')
-  const [comments, setComments] = useState([])
-  const [likes, setLikes] = useState([])
+  const [comments, setComments] = useState<CommentProps[]>([])
+  const [likes, setLikes] = useState<string[]>([])
   const [hasLike, setHasLike] = useState<boolean>(false)
 
   useEffect(() => {
@@ -37,19 +37,32 @@ function Post({ id, username, caption, img, userImg }: PostProps) {
         orderBy('timestamp', 'desc')
       ),
       (snapshot) => {
-        setComments(snapshot.docs)
+        const docs = snapshot.docs;
+        const comments: CommentProps[] = [];
+        docs.forEach((doc) => {
+          comments.push({
+            id: doc.id,
+            userImage: doc.data().profileImg,
+            username: doc.data().username,
+            comment: doc.data().image,
+            timestamp: doc.data().caption,
+          });
+        });
+        setComments(comments)
       }
     )
   }, [db, id])
 
   useEffect(() => {
     onSnapshot(collection(db, 'posts', id, 'likes'), (snapshot) =>
-      setLikes(snapshot.docs)
+      setLikes(snapshot.docs.map((e) => e.id) as string[])
     )
   }, [db, id])
 
+  console.log({likes})
+
   useEffect(() => {
-    setHasLike(likes.some((like) => like.id === session?.user.uid))
+    setHasLike(likes.some((like) => like === session?.user.uid))
   }, [likes])
 
   const sendComment = async (e: React.MouseEvent<HTMLButtonElement>) => {
